@@ -15,6 +15,7 @@ Route::get('/', function () {
 	$name = 'Dan';
 	$data['name'] = $name;
     return view('welcome')->with($data);
+    //or return view('welcome',$data);
 });
 
 Route::get('/sayhello/{name}',function($name = 'World'){
@@ -31,4 +32,13 @@ Route::get('/increment/{number?}',function($number = 0){
 
 Route::get('/add/{a?}/{b?}',function($a,$b){
 	return $a + $b;
+});
+
+Route::get('/rolldice/{guess?}',function($guess = 1){
+
+	$roll = mt_rand(1,6);
+	$data['roll'] = $roll;
+	$data['guess'] = $guess;
+
+	return view('roll-dice')->with($data);
 });
