@@ -43,7 +43,10 @@
                 <div class="title"><?=$roll?></div>
                 <h1>You guessed...</h1>
                 <div class="title"><?=$guess?></div>
-                <?php if ($roll == $guess) :?>
+                
+                <!-- BEST PRACTICE is to do logic with data in model
+                Failing that in a function in the controller -->
+                <?php if ($correct) :?>  
                 	<h2>You guessed well</h2>
                 <?php else : ?>
                 	<h2>You guess poorly</h2>

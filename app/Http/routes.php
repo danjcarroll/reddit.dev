@@ -39,6 +39,7 @@ Route::get('/rolldice/{guess?}',function($guess = 1){
 	$roll = mt_rand(1,6);
 	$data['roll'] = $roll;
 	$data['guess'] = $guess;
+	$data['correct'] = ($roll == $guess);
 
 	return view('roll-dice')->with($data);
 });
