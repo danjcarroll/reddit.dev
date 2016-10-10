@@ -23,7 +23,9 @@ Route::get('/sayhello/{name}',function($name = 'World'){
 });
 
 Route::get('/uppercase/{word?}',function($word = 'word'){
-	return strtoupper($word);
+	$data['word'] = $word;
+	$data['upperword'] = strtoupper($word);
+ 	return view('uppercase')->with($data);
 });
 
 Route::get('/increment/{number?}',function($number = 0){
@@ -43,3 +45,5 @@ Route::get('/rolldice/{guess?}',function($guess = 1){
 
 	return view('roll-dice')->with($data);
 });
+
+
