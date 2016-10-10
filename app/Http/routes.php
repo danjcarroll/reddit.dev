@@ -12,7 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	$name = 'Dan';
+	$data['name'] = $name;
+    return view('welcome')->with($data);
 });
 
 Route::get('/sayhello/{name}',function($name = 'World'){
