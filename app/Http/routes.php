@@ -18,33 +18,17 @@ Route::get('/', function () {
     //or return view('welcome',$data);
 });
 
-Route::get('/sayhello/{name}',function($name = 'World'){
-	return 'Hello '.$name;
-});
+Route::get('/uppercase/{word?}','HomeController@uppercase');
 
-Route::get('/uppercase/{word?}',function($word = 'word'){
-	$data['word'] = $word;
-	$data['upperword'] = strtoupper($word);
- 	return view('uppercase')->with($data);
-});
+Route::get('/increment/{number?}','HomeController@increment');
 
-Route::get('/increment/{number?}',function($number = 0){
-	$data['number'] = $number;
-	return view('increment')->with($data);
-});
+Route::get('/rolldice/{guess?}','HomeController@rolldice');
 
 Route::get('/add/{a?}/{b?}',function($a,$b){
 	return $a + $b;
 });
 
-Route::get('/rolldice/{guess?}',function($guess = 1){
-
-	$roll = mt_rand(1,6);
-	$data['roll'] = $roll;
-	$data['guess'] = $guess;
-	$data['correct'] = ($roll == $guess);
-
-	return view('roll-dice')->with($data);
+Route::get('/sayhello/{name}',function($name = 'World'){
+	return 'Hello '.$name;
 });
-
 
