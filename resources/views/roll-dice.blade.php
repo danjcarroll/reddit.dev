@@ -1,8 +1,6 @@
 @extends('layouts.master')
 
-@section('head')
-    <title>Roll Dice</title>
-@stop
+@section('title','Roll Dice')
 
 @section ('content')
 

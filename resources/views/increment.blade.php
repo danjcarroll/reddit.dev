@@ -1,8 +1,7 @@
 @extends('layouts.master')
 
-@section('head')
-	<title>Increment</title>
-@stop
+@section('title','Increment')
+
 
 @section('content')
 	<div class="title">NOTCH IT</div>

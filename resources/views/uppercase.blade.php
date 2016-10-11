@@ -1,8 +1,6 @@
 @extends('layouts.master')
 
-@section('head')
-	<title>UPPERS</title>
-@stop
+@section('title','UPPERS')
 
 @section('content')
 	<div class="title">UPPERCASE ME</div>
