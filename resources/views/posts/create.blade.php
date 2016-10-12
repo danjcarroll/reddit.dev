@@ -21,7 +21,7 @@
 	</div>
 	<div class="form-group">
 		<label for="url">External Link</label>
-		<input type="text" class="form-control" id="url" name="url" value="{{ old('url') }}" placeholder="example.com">
+		<input type="url" class="form-control" id="url" name="url" value="{{ old('url') }}" placeholder="example.com">
 	</div>
 	<button type="submit" class="btn btn-success btn-default">Submit</button>
 </form>

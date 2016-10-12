@@ -13,12 +13,18 @@
 
     </head>
     <body>
+
+        {{-- @include('layouts.partials.navbar') --}}
+
         <div class="container">
             <div class="content">
 
                 @yield('content')
 
             </div>
+
+            {{-- @include('layouts.partials.footer') --}}
+        
         </div>
 
 

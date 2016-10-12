@@ -17,7 +17,8 @@ class PostsController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return 'index page';
+        $data = array ('posts'=>$posts);
+        return view ('posts.index')->with($data);
     }
 
     /**
@@ -38,7 +39,14 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        return back()->withInput();
+        $post = new Post();
+        $post->title = $request->title;
+        $post->url = $request->url;
+        $post->content = $request->content;
+        $post->created_by = 1;
+        $post->save();
+
+        return redirect()->action('PostsController@index');
     }
 
     /**
@@ -50,8 +58,8 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        dd($post);
-        return 'Show a specific post';
+        $data = array ('post'=>$post);
+        return view ('posts.show')->with($data);
     }
 
     /**
@@ -62,7 +70,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return view('posts.edit');
+        $post = Post::find($id);
+        $data = array('post' => $post);
+        return view('posts.edit')->with($data);
     }
 
     /**
@@ -74,7 +84,13 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return 'Success, your post was updated';
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->url = $request->url;
+        $post->content = $request->content;
+        $post->save();
+
+        return redirect()->action('PostsController@show', $post->id);
     }
 
     /**
