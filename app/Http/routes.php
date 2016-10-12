@@ -32,3 +32,7 @@ Route::get('/sayhello/{name}',function($name = 'World'){
 	return 'Hello '.$name;
 });
 
+// --------------------- Resource Controllers
+
+Route::resource('posts','PostsController');
+
