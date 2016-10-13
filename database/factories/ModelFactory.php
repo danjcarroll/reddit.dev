@@ -14,8 +14,18 @@
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'email' => $faker->safeEmail,
+        'email' => $faker->unique()->safeEmail,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
+    ];
+});
+
+
+$factory->define(App\Models\Post::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->words($nb = 2, $asText = false),
+        'content' => $faker->sentences($nb = 3, $asText = false),
+        'url' => $faker->url,
+        'created_by' => $faker->numberBetween($min = 1, $max = 1000),
     ];
 });

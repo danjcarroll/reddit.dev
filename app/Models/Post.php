@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $table = 'posts';
+
+    public static $rules = [
+            'title' => 'required|min:5',
+            'url' => 'required|url',
+            'content' => 'required',
+        ];
 }

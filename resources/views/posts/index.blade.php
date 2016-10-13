@@ -8,11 +8,18 @@
 </div>
 
 	@foreach ($posts as $post)
-		<h2>{{ $post->title }}</h2>
-		<blockquote>
-			<p>{{ $post->content }}</p>
-		</blockquote>
-			<a href={{ $post->url }}>{{ $post->url }}</a>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{ $post->title }}</h3>
+			</div>
+			<div class="panel-body">
+				{{ $post->content }} <br>
+				<p><small>Posted on: {{ $post->created_at->format('j F y') }}</small></p>
+			</div>
+			<div class="panel-footer"><a href={{ $post->url }}>{{ $post->url }}</a></div>
+		</div>
 	@endforeach
+
+	{!! $posts->render() !!}
 
 @stop
