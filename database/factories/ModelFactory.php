@@ -23,9 +23,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Post::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->words($nb = 2, $asText = false),
-        'content' => $faker->sentences($nb = 3, $asText = false),
+        'title' => $faker->word(3, true),
+        'content' => $faker->paragraph(3, true),
         'url' => $faker->url,
-        'created_by' => $faker->numberBetween($min = 1, $max = 1000),
+        'created_by' => App\User::all()->random()->id,
     ];
 });
