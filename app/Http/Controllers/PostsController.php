@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\Post;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -45,10 +46,13 @@ class PostsController extends Controller
 
         $post = new Post();
         $post->title = $request->title;
-        $post->url = $request->url;
         $post->content = $request->content;
+        $post->url = $request->url;
         $post->created_by = 1;
         $post->save();
+
+
+        Log::info('Inputs for create'.http_build_query($request->input()));
 
         $request->session()->flash('SUCCESS_MESSAGE', 'Post was SAVED successfully');
 
@@ -64,7 +68,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $data = array ('post'=>$post);
         return view ('posts.show')->with($data);
     }
@@ -77,7 +81,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $data = array('post' => $post);
         return view('posts.edit')->with($data);
     }
@@ -93,7 +97,7 @@ class PostsController extends Controller
     {
         $this->validate($request, Post::$rules);
 
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
@@ -112,7 +116,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $post->delete();
 
         $request->session()->flash('SUCCESS_MESSAGE', 'Post was DELETED successfully');
