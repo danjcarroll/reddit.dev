@@ -15,7 +15,7 @@
     </head>
     <body>
 
-        {{-- @include('layouts.partials.navbar') --}}
+        @include('layouts.partials.navbar')
 
         <div class="container">
 
@@ -34,6 +34,7 @@
             {{-- @include('layouts.partials.footer') --}}
         
         </div>
+        @include('layouts.partials.footer')
 
 
         {{-- javascript --}}

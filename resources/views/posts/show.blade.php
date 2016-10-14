@@ -4,23 +4,19 @@
 
 @section ('content')
 <div class="page-header">
-	<h1>A Post <small> Very specific thing no one cares about...</small></h1>
+	<h1>{{ $post->title }}    <small>take a hit</small></h1>
 </div>
-
+<div class="row">
+    <div class="col-sm-3">
+        <h3>author name here</h3>
+        <p>Posted {{ $post->created_at->format('M j Y') }}<p>
+    </div>
+    <div class="col-sm-6">
+      <p class="post-body">{{ $post->content }}<p>
+        <br>
+      <a href={{ $post->url }}>{{ $post->url }}</a>
+    </div>	
 </div>
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">{{ $post->title }}</h3>
-  </div>
-  <div class="panel-body">
-    {{ $post->content }} <br>
-    <p><small>Posted on: {{ $post->created_at->format('j F y') }}</small></p>
-  </div>
-  <div class="panel-footer"><a href={{ $post->url }}>{{ $post->url }}</a></div>
-</div>
-
-
-		
 		
 
 @stop

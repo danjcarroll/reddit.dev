@@ -10,6 +10,17 @@ use App\Http\Controllers\Controller;
 
 class PostsController extends Controller
 {
+
+    /**
+    * protects routes from non-logged in users
+    * excludes index and show
+    */
+
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => ['index','show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +59,7 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = 1;
+        $post->created_by = $request->user()->id;
         $post->save();
 
 

@@ -1,13 +1,13 @@
 @extends ('layouts.master')
 
-@section ('title', 'Create User')
+@section ('title', 'Register')
 
 @section ('content')
 	<div class="page-header">
 		<h1>Create User <small>Start your new addiction</small></h1>
 	</div>
 	<div class="col-sm-6 col-sm-offset-3"
-	<form class="form" method="POST" action="{{ action('UsersController@store') }}">
+	<form class="form" method="POST" action="{{ action('AuthController@create') }}">
 		<div class="input-group margin-bottom-sm">
 			<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
 			<input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" placeholder="Full Name">
