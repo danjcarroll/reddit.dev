@@ -28,11 +28,32 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(5);
+        $postsPerPage = 10;
+
+        if (isset($request->searchTerm))
+            {
+                $posts = Post::search($request->searchTerm)->paginate($postsPerPage);
+        } else
+            {
+                $posts = Post::with('user')->orderBy('created_at', 'Desc')->paginate($postsPerPage);
+            }
+
         $data = array ('posts'=>$posts);
 
         return view ('posts.index')->with($data);
     }
+
+    public function search()
+    {
+        $postsPerPage = 10;
+        $posts = Post::with('user')->orderBy('created_at', 'Desc')->paginate($postsPerPage);
+        $data = array ('posts'=>$posts);
+
+        return view ('posts.index')->with($data);
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.

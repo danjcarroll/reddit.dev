@@ -34,6 +34,8 @@
             {{-- @include('layouts.partials.footer') --}}
         
         </div>
+        <br>
+        <br>
         @include('layouts.partials.footer')
 
 

@@ -23,8 +23,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Post::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->word(3, true),
-        'content' => $faker->paragraph(3, true),
+        'title' => $faker->sentence($nbWords = 3, $variableNbWords = true),
+        'content' => $faker->paragraphs($nb = 3, $asText = true),
         'url' => $faker->url,
         'created_by' => App\User::all()->random()->id,
     ];

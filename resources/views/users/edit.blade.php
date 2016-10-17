@@ -6,7 +6,7 @@
 	<div class="page-header">
 		<h1>Create User <small>Start your new addiction</small></h1>
 	</div>
-	<div class="col-sm-6 col-sm-offset-3"
+	<div class="col-sm-6 col-sm-offset-3">
 	<form class="form" method="POST" action="{{ action('AuthController@create') }}">
 		<div class="input-group margin-bottom-sm">
 			<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>

@@ -8,7 +8,8 @@
 </div>
 <div class="row">
     <div class="col-sm-3">
-        <h3>author name here</h3>
+      <a href="{{ action('UsersController@show' , $post->user->id) }}">
+        <h3>{{ $post->user->name }}</h3></a>
         <p>Posted {{ $post->created_at->format('M j Y') }}<p>
     </div>
     <div class="col-sm-6">
