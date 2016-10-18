@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ action('PostsController@index') }}">Toke</a>
+            <a class="navbar-brand" href="{{ action('PostsController@index') }}">TOKE</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,6 +24,11 @@
                 <li><a href="{{ action('Auth\AuthController@getRegister') }}">Signup</a></li>
             @endif
             </ul>
+            
+            <div class="navbar-form navbar-right">
+                @yield('search-bar')
+            </div><!-- search bar -->
+
 
             @if(Auth::check())
                 <ul class="nav navbar-nav navbar-right">

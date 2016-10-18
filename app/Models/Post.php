@@ -19,6 +19,26 @@ class Post extends Model
     	return $this->belongsTo('App\User', 'created_by', 'id');
     }
 
+    public function votes()
+    {
+        return $this->hasMany('App\Models\Vote', 'post_id');
+    }
+
+    public function getScore()  
+    {
+        return Vote::where('post_id', $this->id)->sum('vote');  
+    }
+
+    public function getUpVotes()
+    {
+        return Vote::where('post_id', $this->id)->where('vote',1)->count();  
+    }
+
+    public function getDownVotes()
+    {
+        return Vote::where('post_id', $this->id)->where('vote',0)->count();  
+    }
+
     public static function search($searchTerm)
     {
         return self::where('title','LIKE','%' . $searchTerm .'%');

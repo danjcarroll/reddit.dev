@@ -29,3 +29,14 @@ $factory->define(App\Models\Post::class, function (Faker\Generator $faker) {
         'created_by' => App\User::all()->random()->id,
     ];
 });
+
+$factory->define(App\Models\Vote::class, function (Faker\Generator $faker) {
+    
+    (mt_rand(0,3) == 0) ? $vote = 0 : $vote = 1;
+
+    return [
+        'post_id' => App\Models\Post::all()->random()->id,
+        'user_id' => App\User::all()->unique()->random()->id,
+        'vote' => $vote,
+    ];
+});

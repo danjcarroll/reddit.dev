@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Post;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use App\Models\Post;
+use App\Models\Vote;
+
 
 class PostsController extends Controller
 {
@@ -26,33 +30,30 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $postsPerPage = 10;
 
         if (isset($request->searchTerm))
             {
                 $posts = Post::search($request->searchTerm)->paginate($postsPerPage);
+
+        } elseif ($request->sort == 'top') 
+        {
+            $posts = Post::with('user')->orderBy('created_at', 'Asc')->paginate($postsPerPage);
+
         } else
             {
                 $posts = Post::with('user')->orderBy('created_at', 'Desc')->paginate($postsPerPage);
             }
 
-        $data = array ('posts'=>$posts);
+        $data = array (
+            'posts'=>$posts,
+            'searchTerm' => $request->searchTerm
+            );
 
         return view ('posts.index')->with($data);
     }
-
-    public function search()
-    {
-        $postsPerPage = 10;
-        $posts = Post::with('user')->orderBy('created_at', 'Desc')->paginate($postsPerPage);
-        $data = array ('posts'=>$posts);
-
-        return view ('posts.index')->with($data);
-    }
-
-
 
 
     /**
@@ -80,7 +81,7 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->url = $request->url;
-        $post->created_by = $request->user()->id;
+        $post->created_by = Auth::id();
         $post->save();
 
 
@@ -101,7 +102,13 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
-        $data = array ('post'=>$post);
+        $upVotes = $post->getUpVotes();
+        $downVotes = $post->getDownVotes();
+        $data = array (
+            'post' => $post,
+            'upVotes' => $upVotes,
+            'downVotes' => $downVotes
+            );
         return view ('posts.show')->with($data);
     }
 
@@ -155,4 +162,23 @@ class PostsController extends Controller
 
         return redirect()->action('PostsController@index');
     }
+
+    public function addVote(Request $request)
+    {
+        Model::unguard();
+
+        $vote = Vote::with('post')->firstOrCreate([
+            'post_id' => $request->input('post_id'),
+            'user_id' => $request->input('user_id')
+            ]);
+        $vote->vote = $request->input('vote');
+        $vote->save();
+
+        Model::reguard();
+
+    }
+
+
+
+
 }

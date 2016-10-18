@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\User;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use App\User;
+use App\Models\Post;
+
 
 class UsersController extends Controller
 {
@@ -18,15 +22,21 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $usersPerPage = 10;
+        
         if (isset($request->searchTerm))
         {
             $users = User::search($request->searchTerm)->paginate($usersPerPage);
-        } else
+        } 
+        else 
         {
-            $users = User::all();
+            $users = User::paginate($usersPerPage);
         }
-        
-        $data = array ('users'=>$users);
+
+
+        $data = array (
+            'users'=>$users,
+            'searchTerm' => $request->searchTerm
+            );
 
         return view ('users.index')->with($data);
 
