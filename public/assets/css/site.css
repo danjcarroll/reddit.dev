@@ -1,0 +1,20 @@
+footer{
+	padding-top: 40px;
+}
+
+small{
+	padding-left: 10px
+}
+
+p{
+	font-size: 1.15em;
+}
+
+.votes{
+    padding-top: 15px;
+    font-size: 1.5em;
+}
+
+.vote-btn{
+	padding-left: 20px;
+}

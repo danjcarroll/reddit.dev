@@ -3,23 +3,58 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;
+use Illuminate\Support\Facades\Log;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Post;
+use App\Models\Vote;
+
+
 class PostsController extends Controller
 {
+
+    /**
+    * protects routes from non-logged in users
+    * excludes index and show
+    */
+
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => ['index','show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
-        $data = array ('posts'=>$posts);
+        $postsPerPage = 10;
+
+        if (isset($request->searchTerm))
+            {
+                $posts = Post::search($request->searchTerm)->paginate($postsPerPage);
+
+        } elseif ($request->sort == 'top') 
+        {
+            $posts = Post::with('user')->orderBy('created_at', 'Asc')->paginate($postsPerPage);
+
+        } else
+            {
+                $posts = Post::with('user')->orderBy('created_at', 'Desc')->paginate($postsPerPage);
+            }
+
+        $data = array (
+            'posts'=>$posts,
+            'searchTerm' => $request->searchTerm
+            );
+
         return view ('posts.index')->with($data);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -39,14 +74,23 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $this->validate($request, Post::$rules);
+
         $post = new Post();
         $post->title = $request->title;
-        $post->url = $request->url;
         $post->content = $request->content;
-        $post->created_by = 1;
+        $post->url = $request->url;
+        $post->created_by = Auth::id();
         $post->save();
 
-        return redirect()->action('PostsController@index');
+
+        Log::info('Inputs for create'.http_build_query($request->input()));
+
+        $request->session()->flash('SUCCESS_MESSAGE', 'Post was SAVED successfully');
+
+
+        return redirect()->action('PostsController@show', $post->id);
     }
 
     /**
@@ -57,8 +101,14 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
-        $data = array ('post'=>$post);
+        $post = Post::findOrFail($id);
+        $upVotes = $post->getUpVotes();
+        $downVotes = $post->getDownVotes();
+        $data = array (
+            'post' => $post,
+            'upVotes' => $upVotes,
+            'downVotes' => $downVotes
+            );
         return view ('posts.show')->with($data);
     }
 
@@ -70,7 +120,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $data = array('post' => $post);
         return view('posts.edit')->with($data);
     }
@@ -84,11 +134,15 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
+        $this->validate($request, Post::$rules);
+
+        $post = Post::findOrFail($id);
         $post->title = $request->title;
         $post->url = $request->url;
         $post->content = $request->content;
         $post->save();
+
+        $request->session()->flash('SUCCESS_MESSAGE', 'Post was UPDATED successfully');
 
         return redirect()->action('PostsController@show', $post->id);
     }
@@ -101,6 +155,30 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        return 'Deletes a post';
+        $post = Post::findOrFail($id);
+        $post->delete();
+
+        $request->session()->flash('SUCCESS_MESSAGE', 'Post was DELETED successfully');
+
+        return redirect()->action('PostsController@index');
     }
+
+    public function addVote(Request $request)
+    {
+        Model::unguard();
+
+        $vote = Vote::with('post')->firstOrCreate([
+            'post_id' => $request->input('post_id'),
+            'user_id' => $request->input('user_id')
+            ]);
+        $vote->vote = $request->input('vote');
+        $vote->save();
+
+        Model::reguard();
+
+    }
+
+
+
+
 }
