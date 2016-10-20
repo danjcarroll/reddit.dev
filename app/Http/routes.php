@@ -14,13 +14,14 @@
 */
 
 
+// Exercises...
+// Route::get('/uppercase/{word?}','HomeController@uppercase');
 
-Route::get('/uppercase/{word?}','HomeController@uppercase');
+// Route::get('/increment/{number?}','HomeController@increment');
 
-Route::get('/increment/{number?}','HomeController@increment');
+// Route::get('/rolldice/{guess?}','HomeController@rolldice');
 
-Route::get('/rolldice/{guess?}','HomeController@rolldice');
-
+Route::get('/', 'PostsController@index');
 
 // --------------------- Resource Controllers
 
